@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import '../configs/wechat_icons.dart';
 
 class NavigationIconView {
   final String _title;
-  final Widget _icon;
-  final Widget _activeIcon;
+  final IconData _icon;
+  final IconData _activeIcon;
   final BottomNavigationBarItem item;
 
-  NavigationIconView({Key key, String title, Widget icon, Widget activeIcon}) :
+  NavigationIconView({Key key, String title, IconData icon, IconData activeIcon}) :
         _title = title,
         _icon = icon,
         _activeIcon = activeIcon,
         item = BottomNavigationBarItem(
-            icon: icon,
-            activeIcon: activeIcon,
+            icon: Icon(icon),
+            activeIcon: Icon(activeIcon),
             title: Text(title),
             backgroundColor: Colors.white
         );
@@ -34,23 +35,23 @@ class _HomeScreenState extends State<HomeScreen> {
     _naviViews = [
       NavigationIconView(
           title: '微信',
-          icon: Icon(Icons.ac_unit),
-          activeIcon: Icon(Icons.alarm)
+          icon: WeChatIcons.wechat,
+          activeIcon: WeChatIcons.wechatActive,
       ),
       NavigationIconView(
           title: '通讯录',
-          icon: Icon(Icons.ac_unit),
-          activeIcon: Icon(Icons.alarm)
+          icon: WeChatIcons.addressBook,
+          activeIcon: WeChatIcons.addressBookActive,
       ),
       NavigationIconView(
           title: '发现',
-          icon: Icon(Icons.ac_unit),
-          activeIcon: Icon(Icons.alarm)
+          icon: WeChatIcons.discovery,
+          activeIcon: WeChatIcons.discoveryActive,
       ),
       NavigationIconView(
           title: '我',
-          icon: Icon(Icons.ac_unit),
-          activeIcon: Icon(Icons.alarm)
+          icon: WeChatIcons.mine,
+          activeIcon: WeChatIcons.mineActive,
       )
     ];
   }
@@ -69,6 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar:  AppBar(
         title: Text('wechat'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => debugPrint('search click'),
+          ),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => debugPrint('add click'),
+          )
+        ],
       ),
       body: Container(
         color: Colors.amber,

@@ -1,1 +1,1 @@
-import 'package:flutter/material.dart';import 'home/home_screen.dart';void main() => runApp(MaterialApp(  title: "wechat",  home: HomeScreen(),));
+import 'package:flutter/material.dart';import 'home/home_screen.dart';import 'configs/wechat_colors.dart';void main() => runApp(MaterialApp(  title: "wechat",  theme: ThemeData.light().copyWith(    primaryColor: WeCatColors.black,  ),  home: HomeScreen(),));
