@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import '../configs/wechat_icons.dart';
+import '../configs/wechat_colors.dart';
+
+enum ActionItems {
+  GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT, HELP
+}
 
 class NavigationIconView {
   final String _title;
@@ -12,9 +17,10 @@ class NavigationIconView {
         _icon = icon,
         _activeIcon = activeIcon,
         item = BottomNavigationBarItem(
-            icon: Icon(icon),
-            activeIcon: Icon(activeIcon),
-            title: Text(title),
+            icon: Icon(icon, color: WeCatColors.gray),
+            activeIcon: Icon(activeIcon, color: WeCatColors.green
+              ,),
+            title: Text(title, style: TextStyle(color: WeCatColors.gray, fontSize: 14.0),),
             backgroundColor: Colors.white
         );
 }
@@ -56,6 +62,15 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
   }
 
+  _buildPopupMenuItem(IconData iconData, String title) {
+    return Row(
+      children: <Widget>[
+        Icon(iconData),
+        Container(width: 12.0,),
+        Text(title)
+      ],
+    );
+  }
 
 
   @override
@@ -75,10 +90,42 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.search),
             onPressed: () => debugPrint('search click'),
           ),
-          IconButton(
+          Container(width: 16.0,),
+//          IconButton(
+//            icon: Icon(Icons.add),
+//            onPressed: () => debugPrint('add click'),
+//          ),
+          PopupMenuButton(
             icon: Icon(Icons.add),
-            onPressed: () => debugPrint('add click'),
-          )
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuItem<ActionItems>>[
+                PopupMenuItem(
+                  child: _buildPopupMenuItem(WeChatIcons.groupChat, '发起群聊'),
+                  value: ActionItems.GROUP_CHAT,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMenuItem(WeChatIcons.addFriend, '添加朋友'),
+                  value: ActionItems.ADD_FRIEND,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMenuItem(WeChatIcons.qrScan, '扫一扫'),
+                  value: ActionItems.QR_SCAN,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMenuItem(WeChatIcons.payment, '收付款'),
+                  value: ActionItems.PAYMENT,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMenuItem(WeChatIcons.help, '帮助与反馈'),
+                  value: ActionItems.HELP,
+                ),
+              ];
+            },
+            onSelected: (ActionItems selected) {
+              debugPrint('click $selected');
+            },
+          ),
+          Container(width: 16.0,)
         ],
       ),
       body: Container(
