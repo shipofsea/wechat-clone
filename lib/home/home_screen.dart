@@ -17,11 +17,10 @@ class NavigationIconView {
         _icon = icon,
         _activeIcon = activeIcon,
         item = BottomNavigationBarItem(
-            icon: Icon(icon, color: WeCatColors.gray),
-            activeIcon: Icon(activeIcon, color: WeCatColors.green
-              ,),
-            title: Text(title, style: TextStyle(color: WeCatColors.gray, fontSize: 14.0),),
-            backgroundColor: Colors.white
+            icon: Icon(icon),
+            activeIcon: Icon(activeIcon),
+            title: Text(title),
+            backgroundColor: Colors.white,
         );
 }
 
@@ -32,12 +31,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
+  PageController _pageController;
+  int _currentIndex = 0;
   List<NavigationIconView> _naviViews;
+  List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: _currentIndex);
+    _pages = [
+      Container(color: Colors.amber,),
+      Container(color: Colors.green,),
+      Container(color: Colors.blue,),
+      Container(color: Colors.deepOrange,),
+    ];
     _naviViews = [
       NavigationIconView(
           title: '微信',
@@ -65,9 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
   _buildPopupMenuItem(IconData iconData, String title) {
     return Row(
       children: <Widget>[
-        Icon(iconData),
+        Icon(iconData, color: WeCatColors.white,),
         Container(width: 12.0,),
-        Text(title)
+        Text(title, style: TextStyle(color: WeCatColors.white),)
       ],
     );
   }
@@ -75,15 +83,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final BottomNavigationBar _bottomNavigationBar = BottomNavigationBar(
+      fixedColor: WeCatColors.green,
       items: _naviViews.map((NavigationIconView view) => view.item).toList(),
-      currentIndex: 0,
+      currentIndex: _currentIndex,
       type: BottomNavigationBarType.fixed,
+      onTap: (int index) {
+        setState(() {
+          _currentIndex = index;
+          _pageController.animateToPage(_currentIndex, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        });
+      },
     );
 
     return Scaffold(
       appBar:  AppBar(
+        elevation: 0.0,
         title: Text('wechat'),
         actions: <Widget>[
           IconButton(
@@ -128,8 +143,17 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(width: 16.0,)
         ],
       ),
-      body: Container(
-        color: Colors.amber,
+      body: PageView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return _pages[index];
+          },
+        controller: _pageController,
+        itemCount: _pages.length,
+        onPageChanged: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
       bottomNavigationBar: _bottomNavigationBar,
     );
